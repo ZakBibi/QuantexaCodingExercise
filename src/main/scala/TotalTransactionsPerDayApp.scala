@@ -6,7 +6,7 @@ object TotalTransactionsPerDayApp {
 
     val transactions = TransactionFileReader.openFile(transactionsFilePath)
 
-    val tr = new TransactionsReport
+    val tr = new TransactionTotals
 
     val totals = tr.totalTransactionsPerDay(transactions)
 

@@ -3,19 +3,9 @@ import org.scalatest.matchers.should.Matchers
 
 import scala.collection.immutable.ListMap
 
+class TransactionAveragesSpec extends AnyFlatSpec with Matchers {
 
-class TransactionsReportSpec extends AnyFlatSpec with Matchers {
-
-  val tr = new TransactionsReport
-
-  "totalTransactionsPerDay" should "get total transactions per day" in {
-    val data = List (
-      Transaction("T0001", "A1", 1, "GG", 200.00),
-      Transaction("T0001", "A2", 1, "GG", 100.00),
-      Transaction("T0003", "A3", 2, "BB", 50.00)
-    )
-    tr.totalTransactionsPerDay(data) shouldBe List((1, 300.00), (2, 50.00))
-  }
+  val ta = new TransactionAverages
 
   "createFiller" should "make filler data" in {
     val data = List (
@@ -46,7 +36,7 @@ class TransactionsReportSpec extends AnyFlatSpec with Matchers {
       ("A2", "GG") -> List(Transaction("", "", 0, "", 0.0))
     )
 
-    tr.createFiller(data) shouldBe filler
+    ta.createFiller(data) shouldBe filler
 
   }
 
@@ -60,7 +50,7 @@ class TransactionsReportSpec extends AnyFlatSpec with Matchers {
       Transaction("T0003", "A1", 2, "FF", 10.00),
       Transaction("T0003", "A1", 2, "GG", 10.00)
     )
-    tr.averageTransactionsPerAcc(data) shouldBe List(("A1", List(10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0)))
+    ta.averageTransactionsPerAcc(data) shouldBe List(("A1", List(10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0)))
   }
 
   it should "get averages and fill in missing data" in {
@@ -71,11 +61,12 @@ class TransactionsReportSpec extends AnyFlatSpec with Matchers {
       Transaction("T0001", "A3", 1, "AA", 10.00)
     )
 
-    tr.averageTransactionsPerAcc(data) shouldBe List(
+    ta.averageTransactionsPerAcc(data) shouldBe List(
       ("A1", List(10.0, 10.0)),
       ("A2", List(0.0, 10.0)),
       ("A3", List(10.0, 0.0)))
 
   }
+
 
 }

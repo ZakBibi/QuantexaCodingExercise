@@ -1,14 +1,6 @@
 import scala.collection.immutable.ListMap
 
-class TransactionsReport {
-
-  def totalTransactionsPerDay(transactions: List[Transaction]): List[(Int, Double)] = {
-    transactions
-      .groupBy(_.transactionDay)
-      .transform((_, value) => value.map(e => e.transactionAmount).sum)
-      .toList
-      .sortBy(i => i._1)
-  }
+class TransactionAverages {
 
   def averageTransactionsPerAcc(transactions: List[Transaction]): List[(String, List[Double])] = {
     val filler = createFiller(transactions)
@@ -53,5 +45,3 @@ class TransactionsReport {
   }
 
 }
-
-case class Transaction(transactionId: String, accountId: String, transactionDay: Int, category: String, transactionAmount: Double)

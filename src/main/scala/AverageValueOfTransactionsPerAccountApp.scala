@@ -6,9 +6,9 @@ object AverageValueOfTransactionsPerAccountApp {
 
     val transactions = TransactionFileReader.openFile(transactionsFilePath)
 
-    val tr = new TransactionsReport
+    val ta = new TransactionAverages
 
-    val averages = tr.averageTransactionsPerAcc(transactions)
+    val averages = ta.averageTransactionsPerAcc(transactions)
 
     val madeStr = for {
       (acc, trans) <- averages
