@@ -82,9 +82,10 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
   }
 
   "maxTransactionValuePerAccount" should "find the max transaction value" in {
-    val data = List(Transaction("T0001", "A2", 7, "GG", 10.0),
-                    Transaction("T0001", "A2", 5, "EE", 50.0)
-                    )
+    val data = List(
+      Transaction("T0001", "A2", 7, "GG", 10.0),
+      Transaction("T0001", "A2", 5, "EE", 50.0)
+    )
     rw.maxTransactionValuePerAccount(data) shouldBe ListMap(
       (5, "A2") -> 50.0,
       (7, "A2") -> 10.0)
