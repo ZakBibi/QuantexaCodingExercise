@@ -58,13 +58,14 @@ class TransactionAveragesSpec extends AnyFlatSpec with Matchers {
       Transaction("T0001", "A1", 1, "AA", 10.00),
       Transaction("T0001", "A1", 1, "BB", 10.00),
       Transaction("T0001", "A2", 1, "BB", 10.00),
-      Transaction("T0001", "A3", 1, "AA", 10.00)
+      Transaction("T0001", "A3", 1, "AA", 10.00),
+      Transaction("T0001", "A3", 1, "CC", 10.00)
     )
 
     ta.averageTransactionsPerAcc(data) shouldBe List(
-      ("A1", List(10.0, 10.0)),
-      ("A2", List(0.0, 10.0)),
-      ("A3", List(10.0, 0.0)))
+      ("A1", List(10.0, 10.0, 0.0)),
+      ("A2", List(0.0, 10.0, 0.0)),
+      ("A3", List(10.0, 0.0, 10.0)))
 
   }
 
