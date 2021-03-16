@@ -20,40 +20,41 @@ class RollingWindowTransactionReports {
   }
 
   private[rollingwindows] def maxTransactionValuePerAccount(transactionWindow: List[Transaction]): ListMap[String, Double] = {
-    val maxTransactionValue = transactionWindow
+    ListMap(maxTransactionValue(transactionWindow).toSeq.sortBy(_._1):_*)
+  }
+
+  private def maxTransactionValue(transactionWindow: List[Transaction]) = {
+    transactionWindow
       .groupBy(t => t.accountId)
-      .transform ((_, value) =>
+      .transform((_, value) =>
         value.map(e => e.transactionAmount).max
       )
-
-    ListMap(maxTransactionValue.toSeq.sortBy(_._1):_*)
-
   }
 
   private[rollingwindows] def averageTransactionValuePerAccount(transactionWindow: List[Transaction]): ListMap[String, Double] = {
-    val transactionAverage = transactionWindow
+    ListMap(transactionAverage(transactionWindow).toSeq.sortBy(_._1):_*)
+  }
+
+  private def transactionAverage(transactionWindow: List[Transaction]) = {
+    transactionWindow
       .groupBy(t => t.accountId)
-      .transform ((_,value) =>
+      .transform((_, value) =>
         value.map(e => e.transactionAmount).sum / value.length
       )
-
-    ListMap(transactionAverage.toSeq.sortBy(_._1):_*)
-
   }
 
   private[rollingwindows] def totalTransactionValuePerCategoryPerAccount(transactionWindow: List[Transaction]): ListMap[(String, String), Double] = {
-    val filler = ZerosForMissingCategories.generate(transactionWindow)
+    val filledTotals = ZerosForMissingCategories.generate(transactionWindow) ++ sumTransactionAmounts(transactionWindow)
 
-    val totals = transactionWindow
+    ListMap(filledTotals.toSeq.sortBy(keyTuple => (keyTuple._1._1, keyTuple._1._2)):_*)
+  }
+
+  private def sumTransactionAmounts(transactionWindow: List[Transaction]) = {
+    transactionWindow
       .groupBy(trans => (trans.accountId, trans.category))
       .transform((_, value) =>
         value.map(trans => trans.transactionAmount).sum
       )
-
-    val filledTotals = filler ++ totals
-
-    ListMap(filledTotals.toSeq.sortBy(keyTuple => (keyTuple._1._1, keyTuple._1._2)):_*)
-
   }
 
   private[rollingwindows] def reportForWindow(transactionWindow: List[Transaction]): ListMap[(Int, String), List[Double]] = {
@@ -93,14 +94,12 @@ class RollingWindowTransactionReports {
     ListMap( windowReport.keySet.map{ accountId =>
       (currentDay, accountId) -> windowReport(accountId)
     }.toSeq.sortBy(_._1):_*)
-
   }
 
   def generateReportsForAllWindows(transactions: List[Transaction], daysInWindow: Int): List[RollingWindowReports] = {
     val transactionWindows = rollingWindows(transactions, daysInWindow)
     transactionWindows.flatMap(t => reportForWindow(t))
-      .map(t => RollingWindowReports(day = t._1._1, accountId = t._1._2, reportData = t._2))
-
+      .map(t => RollingWindowReports(day = t._1._1, accountId = t._1._2, reportData = t._2
   }
 
 }
