@@ -1,3 +1,6 @@
+package com.quantexa.transaction.report.averagesperaccount
+
+import com.quantexa.transaction.report.common.Transaction
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -50,7 +53,9 @@ class TransactionAveragesSpec extends AnyFlatSpec with Matchers {
       Transaction("T0003", "A1", 2, "FF", 10.00),
       Transaction("T0003", "A1", 2, "GG", 10.00)
     )
-    ta.averageTransactionsPerAcc(data) shouldBe List(("A1", List(10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0)))
+    ta.averageTransactionsPerAcc(data) shouldBe List(
+      TransactionAveragesPerAccount("A1", List(10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0))
+    )
   }
 
   it should "get averages and fill in missing data" in {
@@ -63,9 +68,9 @@ class TransactionAveragesSpec extends AnyFlatSpec with Matchers {
     )
 
     ta.averageTransactionsPerAcc(data) shouldBe List(
-      ("A1", List(10.0, 10.0, 0.0)),
-      ("A2", List(0.0, 10.0, 0.0)),
-      ("A3", List(10.0, 0.0, 10.0)))
+      TransactionAveragesPerAccount("A1", List(10.0, 10.0, 0.0)),
+      TransactionAveragesPerAccount("A2", List(0.0, 10.0, 0.0)),
+      TransactionAveragesPerAccount("A3", List(10.0, 0.0, 10.0)))
 
   }
 

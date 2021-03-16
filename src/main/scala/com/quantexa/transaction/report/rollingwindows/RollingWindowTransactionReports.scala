@@ -1,4 +1,10 @@
+package com.quantexa.transaction.report.rollingwindows
+
+import com.quantexa.transaction.report.common.Transaction
+
 import scala.collection.immutable.ListMap
+
+case class RollingWindowReports(day: Int, accountId: String, reportData: List[Double])
 
 class RollingWindowTransactionReports {
 
@@ -109,9 +115,10 @@ class RollingWindowTransactionReports {
 
   }
 
-  def completeReport(transactions: List[Transaction], daysInWindow: Int): List[((Int, String), List[Double])] = {
+  def completeReport(transactions: List[Transaction], daysInWindow: Int): List[RollingWindowReports] = {
     val transactionWindows = rollingWindows(transactions, daysInWindow)
     transactionWindows.flatMap(t => reportForWindow(t))
+      .map(t => RollingWindowReports(t._1._1, t._1._2, t._2))
   }
 
 }

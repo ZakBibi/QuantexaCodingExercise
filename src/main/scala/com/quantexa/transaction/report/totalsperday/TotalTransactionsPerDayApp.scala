@@ -1,3 +1,7 @@
+package com.quantexa.transaction.report.totalsperday
+
+import com.quantexa.transaction.report.common.TransactionFileReader
+
 object TotalTransactionsPerDayApp {
 
   def main(args: Array[String]): Unit = {
@@ -10,9 +14,7 @@ object TotalTransactionsPerDayApp {
 
     val totals = tr.totalTransactionsPerDay(transactions)
 
-    val header = "day, total \n"
-
-    TransactionFileWriter.writeTotalAndAverageReports(args(1), header, totals)
+    TotalsPerDayCSVWriter.writeTotalsReport(args(1), totals)
 
   }
 

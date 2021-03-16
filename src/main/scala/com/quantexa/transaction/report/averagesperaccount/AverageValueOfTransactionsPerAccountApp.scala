@@ -1,3 +1,7 @@
+package com.quantexa.transaction.report.averagesperaccount
+
+import com.quantexa.transaction.report.common.TransactionFileReader
+
 object AverageValueOfTransactionsPerAccountApp {
 
   def main(args: Array[String]): Unit = {
@@ -10,13 +14,7 @@ object AverageValueOfTransactionsPerAccountApp {
 
     val averages = ta.averageTransactionsPerAcc(transactions)
 
-    val madeStr = for {
-      (acc, trans) <- averages
-    } yield (acc, trans.mkString(", "))
-
-    val header = "accountId, AA, BB, CC, DD, EE, FF, GG \n"
-
-    TransactionFileWriter.writeTotalAndAverageReports(args(1), header, madeStr)
+    AverageValueOfTransactionsPerAccountCSVWriter.writeAveragesReport(args(1), averages)
 
   }
 

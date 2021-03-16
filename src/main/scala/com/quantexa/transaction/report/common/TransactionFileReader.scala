@@ -1,3 +1,5 @@
+package com.quantexa.transaction.report.common
+
 import scala.io.Source
 
 object TransactionFileReader {

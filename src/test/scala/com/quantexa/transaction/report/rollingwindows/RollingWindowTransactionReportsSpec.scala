@@ -1,3 +1,6 @@
+package com.quantexa.transaction.report.rollingwindows
+
+import com.quantexa.transaction.report.common.Transaction
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -170,7 +173,7 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
     )
   }
 
-  it should "create reports for more than one window" in {
+  "complete report" should "create reports for more than one window" in {
     val data = List(
       Transaction("T0001", "A1", 1, "AA", 30.00),
       Transaction("T0001", "A2", 2, "BB", 50.00),
@@ -179,10 +182,10 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
     )
 
     rw.completeReport(data, 3) shouldBe List(
-      ((4, "A1"), List(30.0, 17.5, 35.0, 0.0)),
-      ((4, "A2"), List(50.0, 50.0, 0.0, 50.0)),
-      ((5, "A1"), List(5.0, 5.0, 5.0, 0.0)),
-      ((5, "A2"), List(50.0, 27.0, 0.0, 54.0))
+      RollingWindowReports(4, "A1", List(30.0, 17.5, 35.0, 0.0)),
+      RollingWindowReports(4, "A2", List(50.0, 50.0, 0.0, 50.0)),
+      RollingWindowReports(5, "A1", List(5.0, 5.0, 5.0, 0.0)),
+      RollingWindowReports(5, "A2", List(50.0, 27.0, 0.0, 54.0))
     )
   }
 

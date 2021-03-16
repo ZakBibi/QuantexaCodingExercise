@@ -1,8 +1,14 @@
+package com.quantexa.transaction.report.averagesperaccount
+
+import com.quantexa.transaction.report.common.Transaction
+
 import scala.collection.immutable.ListMap
+
+case class TransactionAveragesPerAccount(accountId: String, transactionAverages: List[Double])
 
 class TransactionAverages {
 
-  def averageTransactionsPerAcc(transactions: List[Transaction]): List[(String, List[Double])] = {
+  def averageTransactionsPerAcc(transactions: List[Transaction]): List[TransactionAveragesPerAccount] = {
     val filler = createFiller(transactions)
       .transform((_, value) => value.map(e => e.transactionAmount).head)
 
@@ -19,6 +25,7 @@ class TransactionAverages {
       .transform((_, value) => value.map(e => e._2))
       .toList
       .sortBy(i => i._1)
+      .map(accountAndAverages => TransactionAveragesPerAccount(accountAndAverages._1, accountAndAverages._2))
   }
 
   def createFiller(transactions: List[Transaction]): ListMap[(String, String), List[Transaction]] = {
