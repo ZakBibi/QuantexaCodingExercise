@@ -43,4 +43,4 @@ Each report has its own App, and each can be run on the command line. This means
 `sbt "runMain com.quantexa.transaction.report.rollingwindows.RollingWindowApp [path to transactions.txt] [destination/path to filename]"`
 
 **To Run Totals Per Day:**
-`sbt runMain com.quantexa.transaction.report.totalsperday.TotalTransactionsPerDayApp [path to transactions.txt] [destination/path to filename]"`
+`sbt "runMain com.quantexa.transaction.report.totalsperday.TotalTransactionsPerDayApp [path to transactions.txt] [destination/path to filename]"`
