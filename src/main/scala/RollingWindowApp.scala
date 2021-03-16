@@ -16,7 +16,7 @@ object RollingWindowApp {
 
     val header = "Day, Account ID, Max, Average, AA Total, BB Total, CC Total, DD Total, EE Total, FF total, GG Total \n"
 
-    TransactionFileWriter.writeRollingWindowReportToFile(args(1), header, madeStr)
+    TransactionFileWriter.writeRollingWindowReport(args(1), header, madeStr)
 
   }
 

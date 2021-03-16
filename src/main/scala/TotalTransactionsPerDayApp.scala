@@ -12,7 +12,7 @@ object TotalTransactionsPerDayApp {
 
     val header = "day, total \n"
 
-    TransactionFileWriter.writeTotalAndAverageReportsToFile(args(1), header, totals)
+    TransactionFileWriter.writeTotalAndAverageReports(args(1), header, totals)
 
   }
 

@@ -16,7 +16,7 @@ object AverageValueOfTransactionsPerAccountApp {
 
     val header = "accountId, AA, BB, CC, DD, EE, FF, GG \n"
 
-    TransactionFileWriter.writeTotalAndAverageReportsToFile(args(1), header, madeStr)
+    TransactionFileWriter.writeTotalAndAverageReports(args(1), header, madeStr)
 
   }
 
