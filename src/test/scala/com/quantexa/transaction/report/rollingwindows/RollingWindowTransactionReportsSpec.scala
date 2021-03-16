@@ -10,7 +10,7 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
 
   val rw = new RollingWindowTransactionReports
 
-  "rollingWindow" should "return windows" in {
+  "rollingWindow" should "return overlapping windows of length in days" in {
     val data = List(
       Transaction("T0001", "A1", 1, "AA", 10.00),
       Transaction("T0001", "A1", 2, "BB", 10.00),
@@ -26,30 +26,6 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
         Transaction("T0001", "A1", 2, "BB", 10.0),
         Transaction("T0001", "A1", 3, "BB", 10.0),
         Transaction("T0001", "A1", 4, "AA", 10.0))
-    )
-  }
-
-  it should "group by account, over a period of 8 days with a window of 5" in {
-    val data = List(
-      Transaction("T0001", "A1", 1, "AA", 10.00),
-      Transaction("T0001", "A1", 2, "BB", 10.00),
-      Transaction("T0001", "A2", 3, "CC", 10.00),
-      Transaction("T0001", "A1", 4, "DD", 10.00),
-      Transaction("T0001", "A2", 5, "EE", 10.00)
-    )
-    rw.rollingWindows(data, 3) shouldBe List(
-      List(
-        Transaction("T0001", "A1", 1, "AA", 10.0),
-        Transaction("T0001", "A1", 2, "BB", 10.0),
-        Transaction("T0001", "A2", 3, "CC", 10.0)),
-      List(
-        Transaction("T0001", "A1", 2, "BB", 10.0),
-        Transaction("T0001", "A2", 3, "CC", 10.0),
-        Transaction("T0001", "A1", 4, "DD", 10.0)),
-      List(
-        Transaction("T0001", "A2", 3, "CC", 10.0),
-        Transaction("T0001", "A1", 4, "DD", 10.0),
-        Transaction("T0001", "A2", 5, "EE", 10.0))
     )
   }
 
@@ -108,16 +84,18 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
     val data = List(
       Transaction("T0001", "A1", 1, "GG", 20.0),
       Transaction("T0001", "A1", 2, "GG", 10.0),
-      Transaction("T0001", "A2", 2, "EE", 50.0),
-      Transaction("T0001", "A2", 3, "EE", 5.0)
+      Transaction("T0001", "A2", 2, "EE", 5.0),
+      Transaction("T0001", "A2", 3, "EE", 10.0)
     )
     rw.averageTransactionValuePerAccount(data) shouldBe ListMap(
       "A1" -> 15.0,
-      "A2" -> 27.5
+      "A2" -> 7.5
     )
   }
 
-    "totalTransactionValuePerCategoryPerAccount" should "find the total per transaction value" in {
+    "totalTransactionValuePerCategoryPerAccount" should
+      "find the total per transaction value and should have 0.0 for missing categories" in {
+
       val data = List(
         Transaction("T0001", "A1", 1, "AA", 10.00),
         Transaction("T0001", "A1", 1, "AA", 10.00),
@@ -137,7 +115,7 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
       )
     }
 
-  "reportForWindow" should "create a report for a window" in {
+  "RollingWindowTransactionReports" should "create a report for a single window" in {
     val data = List(
       Transaction("T0001", "A1", 1, "AA", 30.00),
       Transaction("T0001", "A1", 2, "BB", 50.00),
@@ -152,7 +130,7 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
     )
   }
 
-  "complete report" should "create reports for more than one window" in {
+  "RollingWindowTransactionReports" should "create reports for more than one window" in {
     val data = List(
       Transaction("T0001", "A1", 1, "AA", 30.00),
       Transaction("T0001", "A2", 2, "BB", 50.00),

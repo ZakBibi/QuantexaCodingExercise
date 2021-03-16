@@ -8,7 +8,7 @@ object TotalTransactionsPerDayApp {
 
     val transactionsFilePath = args(0)
 
-    val transactions = TransactionFileReader.openFile(transactionsFilePath)
+    val transactions = TransactionFileReader.from(transactionsFilePath)
 
     val tr = new TransactionTotals
 

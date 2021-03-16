@@ -8,7 +8,7 @@ object RollingWindowApp {
 
     val transactionsFilePath = args(0)
 
-    val transactions = TransactionFileReader.openFile(transactionsFilePath)
+    val transactions = TransactionFileReader.from(transactionsFilePath)
 
     val rw = new RollingWindowTransactionReports
 

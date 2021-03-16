@@ -8,7 +8,7 @@ object AverageValueOfTransactionsPerAccountApp {
 
     val transactionsFilePath = args(0)
 
-    val transactions = TransactionFileReader.openFile(transactionsFilePath)
+    val transactions = TransactionFileReader.from(transactionsFilePath)
 
     val ta = new TransactionAverages
 

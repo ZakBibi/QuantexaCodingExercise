@@ -7,12 +7,12 @@ class TransactionFileReaderSpec extends AnyFlatSpec with Matchers {
 
   it should "open file and return list of transactions" in {
     val result = List (
-      Transaction("T0001", "A27", 1, "GG", 338.11),
-      Transaction("T0002", "A5", 1, "BB", 677.89),
-      Transaction("T0003", "A32", 1, "DD", 499.86),
-      Transaction("T0004", "A42", 1, "DD", 801.81)
+      Transaction("transactionId1", "accountId1", 1, "category1", 1.0),
+      Transaction("transactionId2", "accountId2", 2, "category2", 2.0),
+      Transaction("transactionId3", "accountId3", 3, "category3", 3.0),
+      Transaction("transactionId4", "accountId4", 4, "category4", 4.0)
     )
-    TransactionFileReader.openFile("src/test/resources/test-file-reader.txt") shouldBe result
+    TransactionFileReader.from("src/test/resources/test-file-reader.txt") shouldBe result
   }
 
 }

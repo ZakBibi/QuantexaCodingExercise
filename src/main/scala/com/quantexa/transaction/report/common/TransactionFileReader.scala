@@ -4,7 +4,7 @@ import scala.io.Source
 
 object TransactionFileReader {
 
-  def openFile(fileName: String): List[Transaction] = {
+  def from(fileName: String): List[Transaction] = {
     val transactionFile = Source.fromFile(fileName)
     try {
       val transactionLines = transactionFile.getLines().drop(1)
