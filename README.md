@@ -8,7 +8,7 @@ The following repo is my solution to the technical task provided to me by Quante
 
 ![DesignDiagram](https://cdn.discordapp.com/attachments/777309166343290920/821405852015132712/Screenshot_from_2021-03-16_15-32-02.png)
 
-There are separate classes for each report generator. This solution provides a CSV writer, but it could be extended with a JSON writer. Having separate classes for reader report generaters and writers makes this a flexible system and is easier to test. For example: you could provide a different report generator in the future for different reports.
+There are separate classes for each report generator. This solution provides a CSV writer, but it could be extended with a JSON writer. Having separate classes for reader report generator and writers makes this a flexible system and is easier to test. For example: you could provide a different report generator in the future for different reports.
 
 ***Design Commentary***
 
@@ -30,7 +30,7 @@ There is coupling. The report generators can only take in a `List[Transaction]`.
 
 ***How to Build and Run***
 
-Each report has its own App, and each can be run on the commandline. This means there are separate commands for each. 
+Each report has its own App, and each can be run on the command line. This means there are separate commands for each. 
 
 **To Build:**
 `sbt compile` 
