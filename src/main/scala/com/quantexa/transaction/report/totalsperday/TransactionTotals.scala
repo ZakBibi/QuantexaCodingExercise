@@ -9,9 +9,11 @@ class TransactionTotals {
   def totalTransactionsPerDay(transactions: List[Transaction]): List[TotalTransactionsPerDay] = {
     transactions
       .groupBy(_.transactionDay)
-      .transform((_, value) => value.map(e => e.transactionAmount).sum)
+      .transform((_, value) =>
+        value.map(e => e.transactionAmount).sum
+      )
       .toList
-      .sortBy(i => i._1)
+      .sortBy(_._1)
       .map(dayAndTotal => TotalTransactionsPerDay(dayAndTotal._1, dayAndTotal._2))
   }
 
