@@ -6,7 +6,11 @@
 # sbt
 # (may want to keep parts of 'project')
 bin/
-project/
+project/target/.sbt-compilation-infos
+project/target/config-classes
+project/target/scala-2.12
+project/target/streams
+project/target/active.json
 target/
 build/
 
