@@ -2,9 +2,9 @@ package com.quantexa.transaction.report.common
 
 import java.io.{BufferedWriter, File, FileWriter}
 
-object TransactionFileWriter {
+object TransactionReportFileWriter {
 
-  def fileWriter(fileName: String, header: String, reportData: String): Unit = {
+  def writeTo(fileName: String, header: String, reportData: String): Unit = {
     val file = new File(fileName)
     val bw = new BufferedWriter(new FileWriter(file))
     bw.write(header)

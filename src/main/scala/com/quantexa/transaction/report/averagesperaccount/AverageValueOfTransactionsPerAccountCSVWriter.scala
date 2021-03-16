@@ -1,6 +1,6 @@
 package com.quantexa.transaction.report.averagesperaccount
 
-import com.quantexa.transaction.report.common.TransactionFileWriter
+import com.quantexa.transaction.report.common.TransactionReportFileWriter
 
 object AverageValueOfTransactionsPerAccountCSVWriter {
 
@@ -9,7 +9,7 @@ object AverageValueOfTransactionsPerAccountCSVWriter {
       .map(line => "%s, %s\n".format(line.accountId, line.transactionAverages.mkString(",")))
       .mkString("")
     val header = "accountId, AA, BB, CC, DD, EE, FF, GG \n"
-    TransactionFileWriter.fileWriter(fileName, header, reportData)
+    TransactionReportFileWriter.writeTo(fileName, header, reportData)
   }
 
 }

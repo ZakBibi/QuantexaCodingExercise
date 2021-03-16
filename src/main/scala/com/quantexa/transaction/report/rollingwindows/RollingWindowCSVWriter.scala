@@ -1,6 +1,6 @@
 package com.quantexa.transaction.report.rollingwindows
 
-import com.quantexa.transaction.report.common.TransactionFileWriter
+import com.quantexa.transaction.report.common.TransactionReportFileWriter
 
 object RollingWindowCSVWriter {
 
@@ -9,7 +9,7 @@ object RollingWindowCSVWriter {
       .map(line => "%s, %s, %s\n"
         .format(line.day.toString, line.accountId, line.reportData.mkString(","))).mkString("")
     val header = "Day, Account ID, Max, Average, AA Total, BB Total, CC Total, DD Total, EE Total, FF total, GG Total \n"
-    TransactionFileWriter.fileWriter(fileName, header, reportData)
+    TransactionReportFileWriter.writeTo(fileName, header, reportData)
   }
 
 }
