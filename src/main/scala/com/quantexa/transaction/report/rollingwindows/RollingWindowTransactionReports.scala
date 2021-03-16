@@ -2,66 +2,69 @@ package com.quantexa.transaction.report.rollingwindows
 
 import com.quantexa.transaction.report.common.ZerosForMissingCategories
 import com.quantexa.transaction.report.common.Transaction
-
 import scala.collection.immutable.ListMap
 
 case class RollingWindowReports(day: Int, accountId: String, reportData: List[Double])
 
 class RollingWindowTransactionReports {
 
-  def rollingWindows(transactions: List[Transaction], daysInWindow: Int): List[List[Transaction]] = {
+  private[rollingwindows] def rollingWindows(transactions: List[Transaction], windowLengthInDays: Int): List[List[Transaction]] = {
     val days = transactions.map(t => t.transactionDay).distinct.sorted
-    val d = days.sliding(daysInWindow).toList
-    val transInWindows = d.map{
-      e => transactions.filter {
-        t => e.contains(t.transactionDay)
+    val daysInWindow = days.sliding(windowLengthInDays).toList
+    val transInWindows = daysInWindow.map { window =>
+      transactions.filter {
+        t => window.contains(t.transactionDay)
       }
     }
     transInWindows
   }
 
-  def maxTransactionValuePerAccount(transactionWindow: List[Transaction]): ListMap[String, Double] = {
-    val maxTransactionValue = transactionWindow.groupBy(t => t.accountId)
-      .transform (
-      (_, value) => value.map(e => e.transactionAmount).max
+  private[rollingwindows] def maxTransactionValuePerAccount(transactionWindow: List[Transaction]): ListMap[String, Double] = {
+    val maxTransactionValue = transactionWindow
+      .groupBy(t => t.accountId)
+      .transform ((_, value) =>
+        value.map(e => e.transactionAmount).max
       )
 
-    ListMap(maxTransactionValue.toSeq.sortBy(r => r._1):_*)
+    ListMap(maxTransactionValue.toSeq.sortBy(_._1):_*)
 
   }
 
-  def averageTransactionValuePerAccount(transactionWindow: List[Transaction]): ListMap[String, Double] = {
-    val transactionAverage = transactionWindow.groupBy(t => t.accountId)
-      .transform (
-      (_,value) => value.map(e => e.transactionAmount).sum / value.length
+  private[rollingwindows] def averageTransactionValuePerAccount(transactionWindow: List[Transaction]): ListMap[String, Double] = {
+    val transactionAverage = transactionWindow
+      .groupBy(t => t.accountId)
+      .transform ((_,value) =>
+        value.map(e => e.transactionAmount).sum / value.length
       )
 
-    ListMap(transactionAverage.toSeq.sortBy(r => r._1):_*)
+    ListMap(transactionAverage.toSeq.sortBy(_._1):_*)
 
   }
 
-  def totalTransactionValuePerCategoryPerAccount(transactionWindow: List[Transaction]): ListMap[(String, String), Double] = {
+  private[rollingwindows] def totalTransactionValuePerCategoryPerAccount(transactionWindow: List[Transaction]): ListMap[(String, String), Double] = {
     val filler = ZerosForMissingCategories.generate(transactionWindow)
 
     val totals = transactionWindow
-      .groupBy(t => (t.accountId, t.category))
-      .transform((_, value) => value.map(e => e.transactionAmount).sum)
+      .groupBy(trans => (trans.accountId, trans.category))
+      .transform((_, value) =>
+        value.map(trans => trans.transactionAmount).sum
+      )
 
     val filledTotals = filler ++ totals
 
-    ListMap(filledTotals.toSeq.sortBy(r => (r._1._1, r._1._2)):_*)
+    ListMap(filledTotals.toSeq.sortBy(keyTuple => (keyTuple._1._1, keyTuple._1._2)):_*)
+
   }
 
-  def reportForWindow(transactionWindow: List[Transaction]): ListMap[(Int, String), List[Double]] = {
-
+  private[rollingwindows] def reportForWindow(transactionWindow: List[Transaction]): ListMap[(Int, String), List[Double]] = {
+    val byAccountId = transactionWindow.groupBy(t => t.accountId)
     val currentDay = transactionWindow.map(_.transactionDay).max + 1
 
-    val byAccountId = transactionWindow.groupBy(t => t.accountId)
+    val sortedTransactions = ListMap(byAccountId.toSeq.sortBy(_._1):_*)
 
-    val sorted = ListMap(byAccountId.toSeq.sortBy(r => r._1):_*)
-
-    val maxAndAvgByAccount = sorted.transform(
-      (_, value) => {
+    val maxAndAvgByAccount = sortedTransactions
+      .transform((_, value) =>
+      {
         val max = maxTransactionValuePerAccount(value)
         val avg = averageTransactionValuePerAccount(value)
 
@@ -71,8 +74,8 @@ class RollingWindowTransactionReports {
 
     val totalsByCategory = totalTransactionValuePerCategoryPerAccount(transactionWindow)
       .groupBy(_._1._1)
-      .transform(
-        (_, value) => value.values.toList
+      .transform((_, value) =>
+        value.values.toList
       )
 
     val sortedTotals = ListMap(totalsByCategory.toSeq.sortBy(_._1):_*)
@@ -82,21 +85,22 @@ class RollingWindowTransactionReports {
     val merged = maxAndAvgAndTotals
       .groupBy(_._1)
       .transform(
-      (_, value) => value.flatMap(e => e._2)
+      (_, value) => value.flatMap(_._2)
     )
 
-    val windowReport = ListMap(merged.toSeq.sortBy(r => r._1):_*)
+    val windowReport = ListMap(merged.toSeq.sortBy(key => key._1):_*)
 
-    ListMap( windowReport.keySet.map{ e =>
-      (currentDay, e) -> windowReport(e)
-    }.toSeq.sortBy(r => r._1):_*)
+    ListMap( windowReport.keySet.map{ accountId =>
+      (currentDay, accountId) -> windowReport(accountId)
+    }.toSeq.sortBy(_._1):_*)
 
   }
 
-  def completeReport(transactions: List[Transaction], daysInWindow: Int): List[RollingWindowReports] = {
+  def generateReportsForAllWindows(transactions: List[Transaction], daysInWindow: Int): List[RollingWindowReports] = {
     val transactionWindows = rollingWindows(transactions, daysInWindow)
     transactionWindows.flatMap(t => reportForWindow(t))
-      .map(t => RollingWindowReports(t._1._1, t._1._2, t._2))
+      .map(t => RollingWindowReports(day = t._1._1, accountId = t._1._2, reportData = t._2))
+
   }
 
 }

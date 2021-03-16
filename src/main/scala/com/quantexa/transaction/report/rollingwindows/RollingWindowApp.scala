@@ -12,7 +12,7 @@ object RollingWindowApp {
 
     val rw = new RollingWindowTransactionReports
 
-    val rollingWindowReports = rw.completeReport(transactions, 5)
+    val rollingWindowReports = rw.generateReportsForAllWindows(transactions, 5)
 
     RollingWindowCSVWriter.writeRollingWindowReport(args(1), rollingWindowReports)
 

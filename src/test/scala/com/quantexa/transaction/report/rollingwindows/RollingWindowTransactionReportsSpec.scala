@@ -10,7 +10,7 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
 
   val rw = new RollingWindowTransactionReports
 
-  "rollingWindow" should "return a single window" in {
+  "rollingWindow" should "return windows" in {
     val data = List(
       Transaction("T0001", "A1", 1, "AA", 10.00),
       Transaction("T0001", "A1", 2, "BB", 10.00),
@@ -160,7 +160,7 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
       Transaction("T0001", "A2", 4, "BB", 4.00)
     )
 
-    rw.completeReport(data, 3) shouldBe List(
+    rw.generateReportsForAllWindows(data, 3) shouldBe List(
       RollingWindowReports(4, "A1", List(30.0, 17.5, 35.0, 0.0)),
       RollingWindowReports(4, "A2", List(50.0, 50.0, 0.0, 50.0)),
       RollingWindowReports(5, "A1", List(5.0, 5.0, 5.0, 0.0)),

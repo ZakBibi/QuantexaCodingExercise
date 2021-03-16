@@ -16,14 +16,14 @@ class TransactionFileWriterSpec extends AnyFlatSpec with Matchers {
     val data = List("A", "B", "C").mkString("")
     val header = "first, second\n"
     TransactionFileWriter.fileWriter("target/file-writer-test", header, data)
-    compareFiles("target/file-writer-test", "src/test/resources/file-writer-true") shouldBe 0
+    compareFiles("target/file-writer-test", "src/test/resources/file-writer-true.txt") shouldBe 0
   }
 
   it should "return 1 when files do not match" in {
     val data = List("A", "B", "C", "D").mkString("")
     val header = "first, second\n"
     TransactionFileWriter.fileWriter("target/wrong-string-test", header, data)
-    compareFiles("target/wrong-string-test", "src/test/resources/file-writer-true") shouldBe 1
+    compareFiles("target/wrong-string-test", "src/test/resources/file-writer-true.txt") shouldBe 1
   }
 
 }
