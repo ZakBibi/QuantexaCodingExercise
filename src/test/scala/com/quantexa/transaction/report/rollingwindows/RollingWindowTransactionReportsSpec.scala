@@ -117,27 +117,6 @@ class RollingWindowTransactionReportsSpec extends AnyFlatSpec with Matchers {
     )
   }
 
-  "dataFillers" should "fill in the empty data for total transactions" in {
-    val data = List (
-      Transaction("T0001", "A1", 1, "AA", 10.00),
-      Transaction("T0001", "A1", 2, "BB", 10.00),
-      Transaction("T0001", "A2", 1, "AA", 10.00),
-      Transaction("T0001", "A3", 2, "BB", 10.00)
-    )
-
-    rw.totalTransValPerCategoryPerAccFiller(data).foreach(println)
-
-    rw.totalTransValPerCategoryPerAccFiller(data).toList shouldBe ListMap(
-      ("A1", "AA") -> List(Transaction("", "", 0, "", 0.0)),
-      ("A1", "BB") -> List(Transaction("", "", 0, "", 0.0)),
-      ("A2", "AA") -> List(Transaction("", "", 0, "", 0.0)),
-      ("A2", "BB") -> List(Transaction("", "", 0, "", 0.0)),
-      ("A3", "AA") -> List(Transaction("", "", 0, "", 0.0)),
-      ("A3", "BB") -> List(Transaction("", "", 0, "", 0.0))
-    ).toList
-
-  }
-
     "totalTransactionValuePerCategoryPerAccount" should "find the total per transaction value" in {
       val data = List(
         Transaction("T0001", "A1", 1, "AA", 10.00),

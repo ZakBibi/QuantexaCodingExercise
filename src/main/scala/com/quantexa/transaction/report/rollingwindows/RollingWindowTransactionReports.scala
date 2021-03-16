@@ -1,5 +1,6 @@
 package com.quantexa.transaction.report.rollingwindows
 
+import com.quantexa.transaction.report.common.ZerosForMissingCategories
 import com.quantexa.transaction.report.common.Transaction
 
 import scala.collection.immutable.ListMap
@@ -40,8 +41,7 @@ class RollingWindowTransactionReports {
   }
 
   def totalTransactionValuePerCategoryPerAccount(transactionWindow: List[Transaction]): ListMap[(String, String), Double] = {
-    val filler = totalTransValPerCategoryPerAccFiller(transactionWindow)
-      .transform((_, value) => value.map(e => e.transactionAmount).head)
+    val filler = ZerosForMissingCategories.generate(transactionWindow)
 
     val totals = transactionWindow
       .groupBy(t => (t.accountId, t.category))
@@ -50,28 +50,6 @@ class RollingWindowTransactionReports {
     val filledTotals = filler ++ totals
 
     ListMap(filledTotals.toSeq.sortBy(r => (r._1._1, r._1._2)):_*)
-  }
-
-  def totalTransValPerCategoryPerAccFiller(transactionWindow: List[Transaction]): ListMap[(String, String), List[Transaction]] = {
-
-    val accountIds = transactionWindow.map(t => t.accountId).toSet
-    val categories = transactionWindow.map(t => t.category).toSet
-
-    val daysAndIdKeys = for{
-      accId <- accountIds
-      category <- categories
-    } yield (accId, category)
-
-    val fillTransactions = daysAndIdKeys
-      .toList
-      .map(t => (t, List(Transaction("", "", 0, "", 0))))
-
-    val filledMap = fillTransactions
-      .groupBy(_._1)
-      .transform((_,v) => v.flatMap(e => e._2))
-
-    ListMap(filledMap.toSeq.sortBy(r => (r._1._1, r._1._2)):_*)
-
   }
 
   def reportForWindow(transactionWindow: List[Transaction]): ListMap[(Int, String), List[Double]] = {
