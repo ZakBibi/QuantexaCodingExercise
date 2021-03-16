@@ -37,7 +37,7 @@ Each report has its own App, and each can be run on the command line. This means
 `sbt assembly`
 
 **To Run Averages Per Account:**
-`sbt "runMain com.quantexa.transaction.report.averagesperaccount.AverageValueOfTransactionsPerAccountApp [path to transactions.txt] [destination/path to filename]`
+`sbt "runMain com.quantexa.transaction.report.averagesperaccount.AverageValueOfTransactionsPerAccountApp [path to transactions.txt] [destination/path to filename]"`
 
 **To Run Rolling Windows:**
 `sbt "runMain com.quantexa.transaction.report.rollingwindows.RollingWindowApp [path to transactions.txt] [destination/path to filename]"`
