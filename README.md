@@ -33,14 +33,14 @@ There is coupling. The report generators can only take in a `List[Transaction]`.
 Each report has its own App, and each can be run on the command line. This means there are separate commands for each. 
 
 **To Build:**
-`sbt compile` 
-`sbt assembly`
+- `sbt compile` 
+- `sbt assembly`
 
 **To Run Averages Per Account:**
-`sbt "runMain com.quantexa.transaction.report.averagesperaccount.AverageValueOfTransactionsPerAccountApp [path to transactions.txt] [destination/path to filename]"`
+- `sbt "runMain com.quantexa.transaction.report.averagesperaccount.AverageValueOfTransactionsPerAccountApp [path to transactions.txt] [destination/path to filename]"`
 
 **To Run Rolling Windows:**
-`sbt "runMain com.quantexa.transaction.report.rollingwindows.RollingWindowApp [path to transactions.txt] [destination/path to filename]"`
+- `sbt "runMain com.quantexa.transaction.report.rollingwindows.RollingWindowApp [path to transactions.txt] [destination/path to filename]"`
 
 **To Run Totals Per Day:**
-`sbt "runMain com.quantexa.transaction.report.totalsperday.TotalTransactionsPerDayApp [path to transactions.txt] [destination/path to filename]"`
+- `sbt "runMain com.quantexa.transaction.report.totalsperday.TotalTransactionsPerDayApp [path to transactions.txt] [destination/path to filename]"`
