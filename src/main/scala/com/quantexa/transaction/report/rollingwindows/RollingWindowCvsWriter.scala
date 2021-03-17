@@ -2,7 +2,7 @@ package com.quantexa.transaction.report.rollingwindows
 
 import com.quantexa.transaction.report.common.TransactionReportFileWriter
 
-object RollingWindowCSVWriter {
+object RollingWindowCvsWriter {
 
   def writeRollingWindowReport(fileName: String, lines: List[RollingWindowReports]): Unit = {
     val reportData = lines

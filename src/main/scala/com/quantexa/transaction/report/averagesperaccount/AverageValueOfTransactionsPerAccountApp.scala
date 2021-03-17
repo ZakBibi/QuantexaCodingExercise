@@ -14,7 +14,7 @@ object AverageValueOfTransactionsPerAccountApp {
 
     val averages = ta.averageTransactionsPerAcc(transactions)
 
-    AverageValueOfTransactionsPerAccountCSVWriter.writeAveragesReport(args(1), averages)
+    AverageValueOfTransactionsPerAccountCsvWriter.writeAveragesReport(args(1), averages)
 
   }
 

@@ -14,7 +14,7 @@ object TotalTransactionsPerDayApp {
 
     val totals = tr.totalTransactionsPerDay(transactions)
 
-    TotalsPerDayCSVWriter.writeTotalsReport(args(1), totals)
+    TotalsPerDayCsvWriter.writeTotalsReport(args(1), totals)
 
   }
 

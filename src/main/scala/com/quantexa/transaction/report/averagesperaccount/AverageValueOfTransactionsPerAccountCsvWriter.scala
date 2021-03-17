@@ -2,7 +2,7 @@ package com.quantexa.transaction.report.averagesperaccount
 
 import com.quantexa.transaction.report.common.TransactionReportFileWriter
 
-object AverageValueOfTransactionsPerAccountCSVWriter {
+object AverageValueOfTransactionsPerAccountCsvWriter {
 
   def writeAveragesReport(fileName: String, lines: List[TransactionAveragesPerAccount]): Unit = {
     val reportData = lines

@@ -14,7 +14,7 @@ object RollingWindowApp {
 
     val rollingWindowReports = rw.generateReportsForAllWindows(transactions, 5)
 
-    RollingWindowCSVWriter.writeRollingWindowReport(args(1), rollingWindowReports)
+    RollingWindowCvsWriter.writeRollingWindowReport(args(1), rollingWindowReports)
 
   }
 
