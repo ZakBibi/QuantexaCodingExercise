@@ -6,7 +6,7 @@ The following repo is my solution to the technical task provided to me by Quante
 
 **Simple Design Diagram**
 
-![DesignDiagram](https://cdn.discordapp.com/attachments/777309166343290920/821405852015132712/Screenshot_from_2021-03-16_15-32-02.png)
+![DesignDiagram](https://cdn.discordapp.com/attachments/777309166343290920/821678793348349952/quantexadesign.png)
 
 There are separate classes for each report generator. This solution provides a CSV writer, but it could be extended with a JSON writer. Having separate classes for reader report generator and writers makes this a flexible system and is easier to test. For example: you could provide a different report generator in the future for different reports.
 
@@ -37,10 +37,10 @@ Each report has its own App, and each can be run on the command line. This means
 `sbt assembly`
 
 **To Run Averages Per Account:**
-`sbt "runMain com.quantexa.transaction.report.averagesperaccount.AverageValueOfTransactionsPerAccountApp [path to transactions.txt] [destination/path to filename]`
+`sbt "runMain com.quantexa.transaction.report.averagesperaccount.AverageValueOfTransactionsPerAccountApp [path to transactions.txt] [destination/path to filename]"`
 
 **To Run Rolling Windows:**
 `sbt "runMain com.quantexa.transaction.report.rollingwindows.RollingWindowApp [path to transactions.txt] [destination/path to filename]"`
 
 **To Run Totals Per Day:**
-`sbt runMain com.quantexa.transaction.report.totalsperday.TotalTransactionsPerDayApp [path to transactions.txt] [destination/path to filename]"`
+`sbt "runMain com.quantexa.transaction.report.totalsperday.TotalTransactionsPerDayApp [path to transactions.txt] [destination/path to filename]"`
